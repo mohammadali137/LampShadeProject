@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @if (ViewData["Title"] != null)
+    {
+        <title>@ViewData["Title"] - فروشگاه لوازم دکوری</title>
+    }
+    else
+    {
+        <title>فروشگاه لوازم دکوری</title>
+    }
+
+    <meta name="keywords" content="@ViewData["keywords"]" />
+    <meta name="description" content="@ViewData["metaDescription"]" />
+
+    <link href="~/Theme/assets/css/vendors.css" rel="stylesheet">
+    <link href="~/Theme/assets/css/style.css" rel="stylesheet">
+    <link href="~/Theme/assets/css/Custom.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/Theme/assets/css/notifications.css">
+
+</head>
+
+<body>
+
+    @await Component.InvokeAsync("Menu")
+
+    @RenderBody()
+
+    @await Component.InvokeAsync("Footer")
+
+
+    <div class="search-overlay" id="search-overlay">
+        <a href="javascript:void(0)" class="close-search-overlay" id="close-search-overlay">
+            <i class="ion-ios-close-empty"></i>
+        </a>
+        <div class="search-form">
+            <form method="get" asp-page="/Search">
+                <input type="search" name="value" id="value" placeholder="هرچه می خواهید در فروشگاه جستجو کنید ...">
+                <button type="submit">
+                    <i class="ion-android-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+    <div id="scroll-top">
+        <span>برو بالا</span><i class="ion-chevron-right"></i><i class="ion-chevron-right"></i>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/Theme/assets/js/vendors.js"></script>
+    <script src="~/Theme/assets/js/active.js"></script>
+    <script src="~/Theme/assets/js/plugins.js"></script>
+    <script src="~/Theme/assets/js/custom.js"></script>
+    <script src="~/Theme/assets/js/notifications.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            updateCart();
+        });
+
+        function ShowMessage(title, text, theme) {
+            window.createNotification({
+                closeOnClick: true,
+                displayCloseButton: false,
+                positionClass: 'nfc-bottom-left',
+                showDuration: 4000,
+                theme: theme !== '' ? theme : 'success'
+            })({
+                title: title !== '' ? title : 'اعلان',
+                message: decodeURI(text)
+            });
+        }
+
+    </script>
+    @if (
+    TempData["SuccessMessage"] != null ||
+    TempData["ErrorMessage"] != null ||
+    TempData["InfoMessage"] != null ||
+    TempData["WarningMessage"] != null
+    )
+    {
+        if (TempData["SuccessMessage"] != null)
+        {
+            <script>
+                $(document).ready(function () {
+                    ShowMessage('پیغام موفقیت', '@TempData["SuccessMessage"]', 'success');
+                });
+            </script>
+        }
+
+        if (TempData["ErrorMessage"] != null)
+        {
+            <script>
+                $(document).ready(function () {
+                    ShowMessage('پیغام خطا', '@TempData["ErrorMessage"]', 'error');
+                });
+            </script>
+        }
+
+        if (TempData["WarningMessage"] != null)
+        {
+            <script>
+                $(document).ready(function () {
+                    ShowMessage('پیغام اخطار', '@TempData["WarningMessage"]', 'warning');
+                });
+            </script>
+        }
+
+        if (TempData["InfoMessage"] != null)
+        {
+            <script>
+                $(document).ready(function () {
+                    ShowMessage('پیغام اطلاعیه', '@TempData["InfoMessage"]', 'info');
+                });
+            </script>
+        }
+    }
+</body>
+
+</html>
